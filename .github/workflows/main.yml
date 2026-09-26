@@ -6,20 +6,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Download Ngrok
-      run: |
-        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
-        Expand-Archive ngrok.zip
-      shell: powershell
-    - name: Setup Ngrok
-      run: .\ngrok\ngrok.exe config add-authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
-      shell: powershell
     - name: Enable RDP
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         net user runneradmin MyPassword123!
       shell: powershell
-    - name: Connect to RDP
-      run: .\ngrok\ngrok.exe tcp 3389
+
+    - name: Download & Run Tunnel
+      run: |
+        Invoke-WebRequest -Uri https://github.com/ekzhang/bore/releases/download/v0.5.1/bore-v0.5.1-x86_64-pc-windows-msvc.zip -OutFile bore.zip
+        Expand-Archive bore.zip
+        .\bore\bin\bore.exe local 3389 --to bore.pub
       shell: powershell
