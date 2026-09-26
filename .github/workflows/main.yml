@@ -10,7 +10,9 @@ jobs:
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-        net user runneradmin MyPassword123!
+        net user conquer Admin123456! /add
+        net localgroup "Remote Desktop Users" conquer /add
+        net localgroup "Administrators" conquer /add
       shell: powershell
 
     - name: Download & Run Tunnel
