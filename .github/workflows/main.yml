@@ -18,8 +18,7 @@ jobs:
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-        net user runneradmin MyPassword123! /add
-        net localgroup administrators runneradmin /add
+        net user runneradmin MyPassword123!
       shell: powershell
     - name: Connect to RDP
       run: .\ngrok\ngrok.exe tcp 3389
